@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * (Payment)表控制层
@@ -62,10 +63,6 @@ public class PaymentController {
     public CommonResult create(@RequestBody Payment payment) {
 
 
-//        System.out.println("进入create请求");
-//        System.out.println(payment.getId());
-//        System.out.println(payment.getSerial());
-
         Integer result = this.paymentService.insert(payment);
 
         if (result > 0) {
@@ -78,12 +75,12 @@ public class PaymentController {
     @GetMapping("discovery")
     public Object discovery() {
         List<String> services = discoveryClient.getServices();
-        services.forEach(service->{
-            System.out.println("----service"+service);
+        services.forEach(service -> {
+            System.out.println("----service" + service);
         });
         List<ServiceInstance> instances = discoveryClient.getInstances("CLOUD-PAYMENT-SERVICE");
         for (ServiceInstance instance : instances) {
-            System.out.println(instance.getServiceId()+"\t" + instance.getHost()+"\t"+ instance.getPort()+"\t"+instance.getUri());
+            System.out.println(instance.getServiceId() + "\t" + instance.getHost() + "\t" + instance.getPort() + "\t" + instance.getUri());
         }
         return this.discoveryClient;
     }
@@ -93,16 +90,23 @@ public class PaymentController {
     public String getPaymentLB() {
         return serverPort;
     }
-//
-//    @GetMapping("feign/timeout")
-//    public String getFeignTimeOut() {
-//        try {
-//            TimeUnit.SECONDS.sleep(3);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//        return serverPort;
-//    }
+
+    /**
+     * @description: 设置暂停3秒后处理请求
+     * @author: yyc
+     * @date: 2021/11/12
+     * @params:
+     * @return:
+     */
+    @GetMapping("feign/timeout")
+    public String getFeignTimeOut() {
+        try {
+            TimeUnit.SECONDS.sleep(3);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return serverPort;
+    }
 //
 //    @GetMapping("zipkin")
 //    public String paymentZipkin() {

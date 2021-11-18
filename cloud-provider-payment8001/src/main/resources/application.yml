@@ -24,7 +24,7 @@ mybatis:
   #(2)为这个包中的所有类配置别名，类名就是别名【不区分大小写】---->包路径
   type-aliases-package: com.yyc.springcloud.entities
 
-#p16新增
+#p16新增单机版
 #eureka:
 #  client:
 #    #true 表示将自己注册进EurekaServer，默认为true
